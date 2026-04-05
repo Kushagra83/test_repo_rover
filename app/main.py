@@ -16,6 +16,7 @@ from fastapi import FastAPI
 from app.api.routers.health import router as health_router
 from app.api.routers.ingest import router as ingest_router
 from app.api.routers.query import router as query_router
+from app.api.routers.graph import router as graph_router
 from app.api.routers.test import router as test_router
 from app.infrastructure.neo4j_client import Neo4jClient
 
@@ -44,4 +45,5 @@ app = FastAPI(title="RepoRover API", version="0.1.0", lifespan=lifespan)
 app.include_router(health_router)
 app.include_router(ingest_router)
 app.include_router(query_router)
+app.include_router(graph_router)
 app.include_router(test_router)

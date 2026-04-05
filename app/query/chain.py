@@ -100,9 +100,28 @@ def _enrich_step(state: dict) -> dict:
     expanded = graph_expand_neighbors(neo4j, repo_id=repo_id, qualified_names=state["seed_qns"], depth=2)
     
     # Sort neighbors to prioritize "internal" project symbols over external library calls
+    # internal_neighbors = [qn for qn in expanded if "::external::" not in qn]
+    # external_neighbors = [qn for qn in expanded if "::external::" in qn]
+    # sorted_neighbors = internal_neighbors + external_neighbors
+
+    seed_qns = set(state["seed_qns"])
+
     internal_neighbors = [qn for qn in expanded if "::external::" not in qn]
     external_neighbors = [qn for qn in expanded if "::external::" in qn]
+
+    # Merge while preserving priority (internal first)
     sorted_neighbors = internal_neighbors + external_neighbors
+
+    # Deduplicate + remove already-seen seed symbols
+    seen = set(seed_qns)
+    deduped_neighbors: list[str] = []
+
+    for qn in sorted_neighbors:
+        if qn not in seen:
+            seen.add(qn)
+            deduped_neighbors.append(qn)
+
+    sorted_neighbors = deduped_neighbors
 
     if plan.intent == "usage":
         symbol_name = plan.target_symbol

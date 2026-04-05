@@ -2,6 +2,14 @@ from __future__ import annotations
 
 from app.infrastructure.neo4j_client import Neo4jClient
 
+def _dedupe_preserve_order(seq: list[str]) -> list[str]:
+    seen = set()
+    out: list[str] = []
+    for x in seq:
+        if x and x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
 
 def graph_expand_neighbors(
     neo4j: Neo4jClient,
@@ -28,6 +36,8 @@ def graph_expand_neighbors(
             qn = r.get("qn")
             if qn:
                 out.append(qn)
+        
+        out = _dedupe_preserve_order(out)
         return out[:50]
 
 
