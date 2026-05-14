@@ -5,6 +5,7 @@ from functools import lru_cache
 # Disable noisy Chroma telemetry
 os.environ["CHROMA_TELEMETRY"] = "false"
 
+# pyrefly: ignore [missing-import]
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.vectorstores import VectorStoreRetriever
@@ -41,6 +42,16 @@ class VectorStore:
     @classmethod
     def from_settings(cls, repo_id: str) -> "VectorStore":
         return cls(_chroma=_chroma_for_repo(repo_id))
+
+    @classmethod
+    def clear_all(cls) -> None:
+        _chroma_for_repo.cache_clear()
+        try:
+            client = chromadb.PersistentClient(path=settings.chroma_dir)
+            for collection in client.list_collections():
+                client.delete_collection(collection.name)
+        except Exception:
+            pass
 
     def upsert_documents(self, ids: list[str], docs: list[str], metadatas: list[dict]) -> None:
         if not ids:

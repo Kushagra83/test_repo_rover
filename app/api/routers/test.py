@@ -41,6 +41,10 @@ def reset_database(request: Request):
 
     # 2. Wipe Local Folders (Chroma & Work)
     # Note: On Windows, ChromaDB might hold file locks if the server is actively using it.
+    try:
+        VectorStore.clear_all()
+    except Exception:
+        pass
     dirs_to_delete = [
         Path(settings.chroma_dir),
         Path(settings.work_dir)

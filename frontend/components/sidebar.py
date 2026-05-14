@@ -1,6 +1,7 @@
 """Sidebar component with navigation and backend status."""
 from __future__ import annotations
 
+# pyrefly: ignore [missing-import]
 import streamlit as st
 
 from frontend.api_client import health_check
@@ -86,12 +87,12 @@ def render_sidebar() -> str:
         st.markdown("<br>", unsafe_allow_html=True)
         api_url = st.text_input(
             "API URL",
-            value=st.session_state.get("api_url", "http://localhost:8000"),
+            value=st.session_state.get("api_url", "http://127.0.0.1:8080"),
             key="api_url_input",
             label_visibility="collapsed",
-            placeholder="http://localhost:8000",
+            placeholder="http://127.0.0.1:8080",
         )
-        if api_url != st.session_state.get("api_url", "http://localhost:8000"):
+        if api_url != st.session_state.get("api_url", "http://127.0.0.1:8080"):
             st.session_state["api_url"] = api_url
 
         st.markdown(

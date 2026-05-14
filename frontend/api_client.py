@@ -4,7 +4,7 @@ from __future__ import annotations
 import requests
 import streamlit as st
 
-DEFAULT_API_URL = "http://localhost:8000"
+DEFAULT_API_URL = "http://127.0.0.1:8080"
 
 
 def _base_url() -> str:

@@ -1,6 +1,7 @@
 """Settings / Admin page."""
 from __future__ import annotations
 
+# pyrefly: ignore [missing-import]
 import streamlit as st
 
 from frontend.api_client import health_check, reset_database
