@@ -10,7 +10,7 @@ RepoRover ingests local or remote Git repositories, extracts code structure (AST
   - **Connection URI** (looks like `neo4j+s://...`)
   - **Username** (often `neo4j`)
   - **Password**
-
+ 
 2) Create a Python venv and install deps:
 
 ```bash
